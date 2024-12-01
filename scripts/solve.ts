@@ -5,6 +5,7 @@ import { scaffold } from './scaffold.ts'
 
 const day = parseInt(argv[2] ?? '')
 const year = parseInt(process.env.YEAR ?? new Date().getFullYear())
+const isExample = Boolean((argv[3] ?? '') === 'example')
 
 if (!isBetween(day, [1, 25])) {
   console.log(`🎅 Pick a day between ${chalk.bold(1)} and ${chalk.bold(25)}.`)
@@ -16,7 +17,10 @@ await scaffold(day, year)
 
 const name = `${day}`.padStart(2, '0')
 
-const { default: input } = await import(`@/${name}/input.txt`)
+const { default: input } = isExample
+  ? await import(`@/${name}/example.txt`)
+  : await import(`@/${name}/input.txt`)
+
 const { partOne, partTwo, parse } = await import(`@/${name}/${name}.ts`)
 
 const [one, onePerformance] = withPerformance(() => partOne?.(parse(input)))

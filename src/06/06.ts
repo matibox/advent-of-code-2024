@@ -7,7 +7,6 @@ export function parse(input: string) {
 
 type Direction = 'top' | 'bottom' | 'left' | 'right';
 type Position = { row: number; col: number };
-type Move = { pos: Position; dir: Direction };
 
 function getStartingPos(input: ReturnType<typeof parse>): Position {
   const row = input.findIndex(line => line.join('').includes('^'));
@@ -87,19 +86,6 @@ export function partOne(input: ReturnType<typeof parse>) {
   ].map(pos => JSON.parse(pos) as Position);
 
   return distinctReachedPositions.length;
-}
-
-function getObstaclePos(loopPos: Position, loopDir: Direction): Position {
-  switch (loopDir) {
-    case 'top':
-      return { row: loopPos.row + 1, col: loopPos.col - 1 };
-    case 'bottom':
-      return { row: loopPos.row - 1, col: loopPos.col + 1 };
-    case 'left':
-      return { row: loopPos.row + 1, col: loopPos.col + 1 };
-    case 'right':
-      return { row: loopPos.row - 1, col: loopPos.col - 1 };
-  }
 }
 
 function traverse(input: ReturnType<typeof parse>) {
